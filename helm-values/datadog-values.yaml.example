@@ -1,0 +1,58 @@
+datadog:
+  apiKey: "YOUR_DD_API_KEY_HERE"
+  site: "datadoghq.com"
+  
+  # Configurações para kind
+  clusterName: "otel-demo-kind"
+  kubelet:
+    tlsVerify: false
+    
+  # Habilitar Orchestrator Explorer
+  orchestratorExplorer:
+    enabled: true
+    
+  # Habilitar Kubernetes State Metrics
+  kubeStateMetricsCore:
+    enabled: true
+    
+  # Habilitar Universal Service Monitoring
+  serviceMonitoring:
+    enabled: true
+    
+  # Habilitar Network Performance Monitoring
+  networkMonitoring:
+    enabled: true
+    
+  # Configurações APM
+  apm:
+    enabled: true
+    portEnabled: true
+    instrumentation:
+      enabled: true
+      enabledNamespaces: ["otel-demo"]
+    
+  logs:
+    enabled: true
+    containerCollectAll: true
+    
+  processAgent:
+    enabled: true
+
+agents:
+  containers:
+    agent:
+      env:
+        - name: DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_GRPC_ENDPOINT
+          value: "0.0.0.0:4317"
+        - name: DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT
+          value: "0.0.0.0:4318"
+        - name: DD_HOSTNAME
+          value: "otel-demo-kind"
+        - name: DD_KUBERNETES_KUBELET_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DD_KUBELET_TLS_VERIFY
+          value: "false"
+        - name: DD_IGNORE_AUTOCONF
+          value: "etcd kube_scheduler kube_controller_manager"

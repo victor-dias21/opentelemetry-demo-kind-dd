@@ -53,6 +53,14 @@ For detailed documentation, see [Demo Documentation][docs]. If you're curious
 about a specific feature, the [docs landing page][docs] can point you in the
 right direction.
 
+## Datadog Instrumentation
+
+This repository includes configuration for instrumenting the demo with Datadog APM:
+
+- **Quick setup**: `./scripts/install-datadog.sh`
+- **Documentation**: [docs/DATADOG_INSTRUMENTATION.md](docs/DATADOG_INSTRUMENTATION.md)
+- **Configuration files**: `helm-values/` and `datadog/` directories
+
 ## Demos featuring the Astronomy Shop
 
 We welcome any vendor to fork the project to demonstrate their services and

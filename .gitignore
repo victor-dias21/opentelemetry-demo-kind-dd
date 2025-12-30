@@ -53,3 +53,11 @@ test/tracetesting/tracetesting-vars.yaml
 *.apk
 
 !src/currency/build
+# Datadog API keys
+helm-values/datadog-values.yaml
+*.env.local
+.env.datadog
+
+# IDE
+.vscode/
+.idea/

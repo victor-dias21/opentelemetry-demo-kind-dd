@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-datadog
+  namespace: otel-demo
+data:
+  otel-collector-config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+    
+    processors:
+      batch:
+        timeout: 10s
+        send_batch_size: 1024
+      
+      resource:
+        attributes:
+          - key: service.name
+            action: upsert
+            from_attribute: service_name
+    
+    exporters:
+      # Manter Jaeger para comparação
+      jaeger:
+        endpoint: jaeger-collector:14250
+        tls:
+          insecure: true
+          
+      # Datadog exporter
+      datadog:
+        api:
+          site: datadoghq.com
+          key: "YOUR_DD_API_KEY_HERE"
+        
+        traces:
+          span_name_remappings:
+            instrumentation:express: express
+            instrumentation:http: http
+        
+        hostname: "otel-demo-kind"
+        
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [resource, batch]
+          exporters: [jaeger, datadog]
+        metrics:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [datadog]
